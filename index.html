@@ -287,13 +287,13 @@
           Password updated successfully. You can now return to the Tabot app and sign in with your new password.
         </div>
 
-        <button class="button" onclick="window.location.href='https://tabot.app'">
-          Go to Tabot website
+        <button class="button" type="button" onclick="openTabotApp()">
+          Open Tabot app
         </button>
       </div>
 
-      <button id="backBtn" class="button secondary" type="button" onclick="window.location.href='https://tabot.app'">
-        Back to Tabot
+      <button id="backBtn" class="button secondary" type="button" onclick="openTabotApp()">
+        Back to Tabot app
       </button>
     </section>
 
@@ -307,6 +307,10 @@
     // Later, when production is finalized, you can change this to:
     // const API_BASE = "https://api.onehabesha.com/api";
     const API_BASE = "https://api-local.onehabesha.com/api";
+
+    // This opens the installed mobile app.
+    // It works best on a phone/simulator where Tabot is installed.
+    const TABOT_APP_URL = "tabot://";
 
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
@@ -324,6 +328,17 @@
 
     function hideMessage() {
       message.style.display = "none";
+    }
+
+    function openTabotApp() {
+      window.location.href = TABOT_APP_URL;
+
+      setTimeout(() => {
+        showMessage(
+          "info",
+          "If the Tabot app did not open, please open it manually from your phone and sign in with your new password."
+        );
+      }, 1200);
     }
 
     async function validateToken() {
