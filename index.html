@@ -303,9 +303,10 @@
   </main>
 
   <script>
-    // Use your real public backend API here.
-    // Do not use localhost for production.
-    const API_BASE = "https://api.onehabesha.com/api";
+    // Use the public backend URL that is currently working for your app/API.
+    // Later, when production is finalized, you can change this to:
+    // const API_BASE = "https://api.onehabesha.com/api";
+    const API_BASE = "https://api-local.onehabesha.com/api";
 
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
@@ -327,34 +328,56 @@
 
     async function validateToken() {
       if (!token) {
-        showMessage("error", "This reset link is missing a token. Please request a new password reset email.");
+        showMessage(
+          "error",
+          "This reset link is missing a token. Please request a new password reset email."
+        );
         return;
       }
 
       try {
         showMessage("info", "Checking your reset link...");
 
-        const res = await fetch(
-          API_BASE + "/auth/reset-password/validate?token=" + encodeURIComponent(token),
-          {
-            method: "GET",
-            headers: {
-              "Accept": "application/json"
-            }
-          }
-        );
+        const url =
+          API_BASE +
+          "/auth/reset-password/validate?token=" +
+          encodeURIComponent(token);
+
+        console.log("Validating reset token:", url);
+
+        const res = await fetch(url, {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+          },
+        });
 
         const data = await res.json().catch(() => null);
 
+        console.log("Validate response:", {
+          status: res.status,
+          ok: res.ok,
+          data,
+        });
+
         if (!res.ok || !data || !data.valid) {
-          showMessage("error", data?.message || "This reset link is invalid or expired. Please request a new one.");
+          showMessage(
+            "error",
+            data?.message ||
+              "This reset link is invalid or expired. Please request a new one."
+          );
           return;
         }
 
         hideMessage();
         form.classList.remove("hidden");
       } catch (err) {
-        showMessage("error", "Unable to validate this reset link. Please try again later.");
+        console.error("Reset token validation request failed:", err);
+
+        showMessage(
+          "error",
+          "Unable to reach the Tabot server from this page. Please check API URL/CORS and try again."
+        );
       }
     }
 
@@ -362,7 +385,9 @@
       event.preventDefault();
 
       const password = document.getElementById("password").value.trim();
-      const confirmPassword = document.getElementById("confirmPassword").value.trim();
+      const confirmPassword = document
+        .getElementById("confirmPassword")
+        .value.trim();
 
       if (password.length < 6) {
         showMessage("error", "Password must be at least 6 characters.");
@@ -379,22 +404,36 @@
         submitBtn.textContent = "Saving...";
         hideMessage();
 
-        const res = await fetch(API_BASE + "/auth/reset-password", {
+        const url = API_BASE + "/auth/reset-password";
+
+        console.log("Submitting new password:", url);
+
+        const res = await fetch(url, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Accept": "application/json"
+            Accept: "application/json",
           },
           body: JSON.stringify({
-            token: token,
-            new_password: password
-          })
+            token,
+            new_password: password,
+          }),
         });
 
         const data = await res.json().catch(() => null);
 
+        console.log("Reset password response:", {
+          status: res.status,
+          ok: res.ok,
+          data,
+        });
+
         if (!res.ok) {
-          showMessage("error", data?.message || "Unable to reset password. Please request a new link.");
+          showMessage(
+            "error",
+            data?.message ||
+              "Unable to reset password. Please request a new link."
+          );
           return;
         }
 
@@ -402,7 +441,12 @@
         successBox.classList.remove("hidden");
         hideMessage();
       } catch (err) {
-        showMessage("error", "Network error. Please try again.");
+        console.error("Reset password request failed:", err);
+
+        showMessage(
+          "error",
+          "Unable to reach the Tabot server from this page. Please check API URL/CORS and try again."
+        );
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = "Save new password";
