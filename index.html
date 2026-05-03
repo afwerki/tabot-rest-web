@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reset Password | Tabot Church App</title>
+
+  <style>
+    :root {
+      --bg: #f5eddc;
+      --card: #fffaf0;
+      --card-soft: #f8f0e2;
+      --ink: #2b2118;
+      --muted: #756757;
+      --gold: #b88a44;
+      --brown: #4a342e;
+      --brown-soft: #6b5047;
+      --border: #e5d2b3;
+      --danger: #b91c1c;
+      --success: #15803d;
+      --white: #fffaf2;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(184, 138, 68, 0.16), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(74, 52, 46, 0.12), transparent 34%),
+        var(--bg);
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 14px;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 620px;
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .brand-mark {
+      width: 76px;
+      height: 76px;
+      border-radius: 26px;
+      margin: 0 auto 14px;
+      background: linear-gradient(135deg, #f8ead0, #ead2a8);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 12px 30px rgba(43, 33, 24, 0.12);
+      font-size: 34px;
+    }
+
+    .brand-kicker {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #8a6a3e;
+      margin-bottom: 6px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 42px;
+      line-height: 1.05;
+      letter-spacing: -0.8px;
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .subtitle {
+      margin: 14px auto 0;
+      max-width: 500px;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 16px;
+    }
+
+    .card {
+      margin-top: 26px;
+      background: rgba(255, 250, 240, 0.94);
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      padding: 30px;
+      box-shadow: 0 18px 55px rgba(43, 33, 24, 0.13);
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 900;
+      color: #8a6a3e;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      height: 56px;
+      border-radius: 18px;
+      border: 1px solid #eadcca;
+      background: #fff6e8;
+      color: var(--ink);
+      font-size: 17px;
+      padding: 0 16px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 4px rgba(184, 138, 68, 0.14);
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 4px 0 18px;
+    }
+
+    .button {
+      width: 100%;
+      min-height: 58px;
+      border: none;
+      border-radius: 999px;
+      background: var(--brown);
+      color: var(--white);
+      font-size: 17px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 14px 28px rgba(74, 52, 46, 0.22);
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+    }
+
+    .button:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .secondary {
+      margin-top: 14px;
+      background: transparent;
+      color: var(--brown);
+      border: 1px solid var(--border);
+      box-shadow: none;
+    }
+
+    .message {
+      display: none;
+      padding: 16px;
+      border-radius: 18px;
+      margin-bottom: 18px;
+      line-height: 1.6;
+      font-weight: 700;
+    }
+
+    .message.error {
+      display: block;
+      background: #fff1f1;
+      color: var(--danger);
+      border: 1px solid #fecaca;
+    }
+
+    .message.success {
+      display: block;
+      background: #eefbf2;
+      color: var(--success);
+      border: 1px solid #bbf7d0;
+    }
+
+    .message.info {
+      display: block;
+      background: var(--card-soft);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 520px) {
+      h1 {
+        font-size: 36px;
+      }
+
+      .card {
+        padding: 22px;
+        border-radius: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="shell">
+    <section class="brand">
+      <div class="brand-mark">✝</div>
+      <div class="brand-kicker">Tabot Church App</div>
+      <h1>Reset your password</h1>
+      <p class="subtitle">
+        Create a new password for your Tabot account. After saving it, return to the app and sign in.
+      </p>
+    </section>
+
+    <section class="card">
+      <div class="card-title">Secure password reset</div>
+
+      <div id="message" class="message info">
+        Checking your reset link...
+      </div>
+
+      <form id="resetForm" class="hidden">
+        <div class="field">
+          <label for="password">New password</label>
+          <input
+            id="password"
+            type="password"
+            placeholder="Enter new password"
+            autocomplete="new-password"
+            minlength="6"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label for="confirmPassword">Confirm password</label>
+          <input
+            id="confirmPassword"
+            type="password"
+            placeholder="Confirm new password"
+            autocomplete="new-password"
+            minlength="6"
+            required
+          />
+        </div>
+
+        <p class="hint">
+          Your password must be at least 6 characters.
+        </p>
+
+        <button id="submitBtn" class="button" type="submit">
+          Save new password
+        </button>
+      </form>
+
+      <div id="successBox" class="hidden">
+        <div class="message success">
+          Password updated successfully. You can now return to the Tabot app and sign in with your new password.
+        </div>
+
+        <button class="button" onclick="window.location.href='https://tabot.app'">
+          Go to Tabot website
+        </button>
+      </div>
+
+      <button id="backBtn" class="button secondary" type="button" onclick="window.location.href='https://tabot.app'">
+        Back to Tabot
+      </button>
+    </section>
+
+    <p class="footer-note">
+      If you did not request this password reset, you can safely close this page.
+    </p>
+  </main>
+
+  <script>
+    // Use your real public backend API here.
+    // Do not use localhost for production.
+    const API_BASE = "https://api.onehabesha.com/api";
+
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+
+    const message = document.getElementById("message");
+    const form = document.getElementById("resetForm");
+    const successBox = document.getElementById("successBox");
+    const submitBtn = document.getElementById("submitBtn");
+
+    function showMessage(type, text) {
+      message.className = "message " + type;
+      message.textContent = text;
+      message.style.display = "block";
+    }
+
+    function hideMessage() {
+      message.style.display = "none";
+    }
+
+    async function validateToken() {
+      if (!token) {
+        showMessage("error", "This reset link is missing a token. Please request a new password reset email.");
+        return;
+      }
+
+      try {
+        showMessage("info", "Checking your reset link...");
+
+        const res = await fetch(
+          API_BASE + "/auth/reset-password/validate?token=" + encodeURIComponent(token),
+          {
+            method: "GET",
+            headers: {
+              "Accept": "application/json"
+            }
+          }
+        );
+
+        const data = await res.json().catch(() => null);
+
+        if (!res.ok || !data || !data.valid) {
+          showMessage("error", data?.message || "This reset link is invalid or expired. Please request a new one.");
+          return;
+        }
+
+        hideMessage();
+        form.classList.remove("hidden");
+      } catch (err) {
+        showMessage("error", "Unable to validate this reset link. Please try again later.");
+      }
+    }
+
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const password = document.getElementById("password").value.trim();
+      const confirmPassword = document.getElementById("confirmPassword").value.trim();
+
+      if (password.length < 6) {
+        showMessage("error", "Password must be at least 6 characters.");
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        showMessage("error", "Passwords do not match.");
+        return;
+      }
+
+      try {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Saving...";
+        hideMessage();
+
+        const res = await fetch(API_BASE + "/auth/reset-password", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify({
+            token: token,
+            new_password: password
+          })
+        });
+
+        const data = await res.json().catch(() => null);
+
+        if (!res.ok) {
+          showMessage("error", data?.message || "Unable to reset password. Please request a new link.");
+          return;
+        }
+
+        form.classList.add("hidden");
+        successBox.classList.remove("hidden");
+        hideMessage();
+      } catch (err) {
+        showMessage("error", "Network error. Please try again.");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Save new password";
+      }
+    });
+
+    validateToken();
+  </script>
+</body>
+</html>
